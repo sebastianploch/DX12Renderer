@@ -16,9 +16,7 @@ if (POLICY CMP0141)
 endif()
 
 project(DX12Renderer LANGUAGES CXX)
-
-# Add source to this project's executable.
-add_executable (DX12Renderer WIN32 "src/main.h" "src/main.cpp" "src/framework.h" "src/Resource.h" "src/targetver.h")
+add_subdirectory("src")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET DX12Renderer PROPERTY CXX_STANDARD 23)

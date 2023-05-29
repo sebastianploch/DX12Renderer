@@ -2,9 +2,7 @@
 //
 
 #include "framework.h"
-#include "DX12Renderer.h"
-
-#define MAX_LOADSTRING 100
+#include "main.h"
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -50,10 +48,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
-
-
 
 //
 //  FUNCTION: MyRegisterClass()

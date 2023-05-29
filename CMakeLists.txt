@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.24)
 
 # Enable Edit and Continue for MSVC compilers if supported.
 if(MSVC)
-  target_compile_options(<target> PUBLIC "/permissive /ZI /W4 /WX ")
+  target_compile_options(<target> PUBLIC "/permissive /ZI /W4 /WX")
   target_link_options(<target> PUBLIC "/INCREMENTAL")
 endif()
 
@@ -18,7 +18,7 @@ endif()
 project(DX12Renderer LANGUAGES CXX)
 
 # Add source to this project's executable.
-add_executable (DX12Renderer WIN32 "src/DX12Renderer.h" "src/DX12Renderer.cpp" "src/framework.h" "src/Resource.h" "src/targetver.h")
+add_executable (DX12Renderer WIN32 "src/main.h" "src/main.cpp" "src/framework.h" "src/Resource.h" "src/targetver.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET DX12Renderer PROPERTY CXX_STANDARD 23)

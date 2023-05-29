@@ -2,50 +2,54 @@
     "version": 5,
     "cmakeMinimumRequired": {"major": 3, "minor": 24, "patch": 0},
     "configurePresets": [
-        {
-            "name": "windows-base",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/bin/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
-            "cacheVariables": {
-              "CMAKE_C_COMPILER": "cl.exe",
-              "CMAKE_CXX_COMPILER": "cl.exe",
-              "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-            },
-            "condition": {
-              "type": "equals",
-              "lhs": "${hostSystemName}",
-              "rhs": "Windows"
-            },
-            "vendor": {
-              "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                "intelliSenseMode": "windows-msvc-x64",
-                "enableMicrosoftCodeAnalysis": true,
-                "enableClangTidyCodeAnalysis": true,
-                "clangTidyChecks": "clang-analyzer-*"
-              }
-            }
+      {
+        "name": "windows-base",
+        "hidden": true,
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/bin/${presetName}",
+        "installDir": "${sourceDir}/out/install/${presetName}",
+        "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "environment": {
+          "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
         },
-        {
-            "name": "x64-debug",
-            "displayName": "x64 Debug",
-            "inherits": "windows-base",
-            "architecture": {
-                "value": "x64",
-                "strategy": "external"
-            },
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
+        "cacheVariables": {
+          "CMAKE_C_COMPILER": "cl.exe",
+          "CMAKE_CXX_COMPILER": "cl.exe"
         },
-        {
-            "name": "x64-release",
-            "displayName": "x64 Release",
-            "inherits": "x64-debug",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Windows"
+        },
+        "vendor": {
+          "microsoft.com/VisualStudioSettings/CMake/1.0": {
+            "hostOS": [ "Windows" ],
+            "intelliSenseMode": "windows-msvc-x64",
+            "enableMicrosoftCodeAnalysis": true,
+            "enableClangTidyCodeAnalysis": true,
+            "clangTidyChecks": "clang-analyzer-*"
+          }
         }
+      },
+      {
+          "name": "x64-debug",
+          "displayName": "x64 Debug",
+          "inherits": "windows-base",
+          "architecture": {
+              "value": "x64",
+              "strategy": "external"
+          },
+          "cacheVariables": {
+              "CMAKE_BUILD_TYPE": "Debug"
+          }
+      },
+      {
+          "name": "x64-release",
+          "displayName": "x64 Release",
+          "inherits": "x64-debug",
+          "cacheVariables": {
+              "CMAKE_BUILD_TYPE": "Release"
+          }
+      }
     ]
 }

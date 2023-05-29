@@ -15,10 +15,10 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("DX12Renderer")
+project(DX12Renderer LANGUAGES CXX)
 
 # Add source to this project's executable.
-add_executable (DX12Renderer "src/DX12Renderer.cpp" "src/DX12Renderer.h")
+add_executable (DX12Renderer WIN32 "src/DX12Renderer.h" "src/DX12Renderer.cpp" "src/DX12Renderer.rc" "src/framework.h" "src/Resource.h" "src/targetver.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET DX12Renderer PROPERTY CXX_STANDARD 23)

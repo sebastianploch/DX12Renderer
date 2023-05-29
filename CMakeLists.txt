@@ -18,8 +18,13 @@ endif()
 project(DX12Renderer LANGUAGES CXX)
 
 # Add source to this project's executable.
-add_executable (DX12Renderer WIN32 "src/DX12Renderer.h" "src/DX12Renderer.cpp" "src/DX12Renderer.rc" "src/framework.h" "src/Resource.h" "src/targetver.h")
+add_executable (DX12Renderer WIN32 "src/DX12Renderer.h" "src/DX12Renderer.cpp" "src/framework.h" "src/Resource.h" "src/targetver.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET DX12Renderer PROPERTY CXX_STANDARD 23)
 endif()
+
+# Use UNICODE instead of ANSI
+target_compile_definitions(DX12Renderer
+  PRIVATE "UNICODE;_UNICODE"
+)

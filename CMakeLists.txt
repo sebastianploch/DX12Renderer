@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.24)
 
 # Enable Edit and Continue for MSVC compilers if supported.
 if(MSVC)
-  target_compile_options(<target> PUBLIC "/permissive /ZI /W4 /WX")
+  target_compile_options(<target> PUBLIC "/permissive /std:c++23 /ZI /W4 /WX")
   target_link_options(<target> PUBLIC "/INCREMENTAL")
 endif()
 

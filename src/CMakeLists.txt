@@ -4,7 +4,6 @@ target_include_directories(DX12Renderer PRIVATE src)
 target_sources(DX12Renderer
 	PRIVATE
 		"framework.h"
-		"main.h"
 		"main.cpp"
 		"Resource.h"
 		"targetver.h"

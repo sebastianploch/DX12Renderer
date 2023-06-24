@@ -1,8 +1,8 @@
 // DX12Renderer.cpp : Defines the entry point for the application.
 //
 
+#include "resource.h"
 #include "framework.h"
-#include "main.h"
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance

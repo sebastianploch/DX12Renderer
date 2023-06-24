@@ -1,13 +1,7 @@
 ﻿# CMakeList.txt : CMake project for DX12Renderer, include source and define
 # project specific logic here.
 #
-cmake_minimum_required (VERSION 3.24)
-
-# Enable Edit and Continue for MSVC compilers if supported.
-if(MSVC)
-  target_compile_options(<target> PUBLIC "/permissive /std:c++23 /ZI /W4 /WX")
-  target_link_options(<target> PUBLIC "/INCREMENTAL")
-endif()
+cmake_minimum_required (VERSION 3.26)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -18,6 +12,12 @@ endif()
 # Project Setup
 project(DX12Renderer LANGUAGES CXX)
 add_subdirectory("src")
+
+# Enable Edit and Continue for MSVC compilers if supported.
+if(MSVC)
+  target_compile_options(DX12Renderer PUBLIC "/permissive /std:c++23 /ZI /W4 /WX")
+  target_link_options(DX12Renderer PUBLIC "/INCREMENTAL")
+endif()
 
 set_property(TARGET DX12Renderer PROPERTY CXX_STANDARD 23)
 

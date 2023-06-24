@@ -1,12 +1,12 @@
-set(DX12RENDERER_SOURCE_FILES
-		main.cpp
-		Core/Application.cpp)
+add_executable(DX12Renderer WIN32)
+target_include_directories(DX12Renderer PRIVATE src)
 
-set(DX12RENDERER_HEADER_FILES
-		../include/main.h
-		../include/framework.h
-		../include/Resource.h
-		../include/Core/Application.h)
-
-add_executable(DX12Renderer WIN32 ${DX12RENDERER_SOURCE_FILES} ${DX12RENDERER_HEADER_FILES})
-target_include_directories(DX12Renderer PUBLIC ../include)
+target_sources(DX12Renderer
+	PRIVATE
+		"framework.h"
+		"main.h"
+		"main.cpp"
+		"Resource.h"
+		"targetver.h"
+		"Core/Application.h"
+		"Core/Application.cpp")

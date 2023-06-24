@@ -23,7 +23,6 @@ target_precompile_headers(DX12Renderer PRIVATE "pch.h")
 target_include_directories(DX12Renderer PRIVATE "${CMAKLE_CURRENT_LIST_DIR}")
 target_sources(DX12Renderer
 	PRIVATE
-		"pch.h"
 		"framework.h"
 		"main.cpp"
 		"Resource.h"

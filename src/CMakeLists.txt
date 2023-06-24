@@ -13,8 +13,9 @@ target_compile_definitions(DX12Renderer
   PRIVATE "UNICODE;_UNICODE"
 )
 
-# Link DX12 Libs
-target_link_libraries(DX12Renderer PRIVATE d3dcompiler.lib d3d12.lib dxgi.lib dxguid.lib)
+# Link Libs
+find_package(directx-headers REQUIRED)
+target_link_libraries(DX12Renderer PRIVATE d3dcompiler.lib d3d12.lib dxgi.lib dxguid.lib Microsoft::DirectX-Guids Microsoft::DirectX-Headers)
 
 # PCH
 target_precompile_headers(DX12Renderer PRIVATE "pch.h")

@@ -14,7 +14,7 @@ target_compile_definitions(DX12Renderer
 )
 
 # Link DX12 Libs
-target_link_libraries(DX12Renderer PRIVATE d3dcompiler.lib d3d12.lib dxgi.lib)
+target_link_libraries(DX12Renderer PRIVATE d3dcompiler.lib d3d12.lib dxgi.lib dxguid.lib)
 
 # PCH
 target_precompile_headers(DX12Renderer PRIVATE "pch.h")

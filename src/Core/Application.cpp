@@ -1,5 +1,4 @@
 #include "Application.h"
-#include <format>
 
 void Application::Initialise()
 {

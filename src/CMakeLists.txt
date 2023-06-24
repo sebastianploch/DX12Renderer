@@ -16,10 +16,14 @@ target_compile_definitions(DX12Renderer
 # Link DX12 Libs
 target_link_libraries(DX12Renderer PRIVATE d3dcompiler.lib d3d12.lib dxgi.lib)
 
+# PCH
+target_precompile_headers(DX12Renderer PRIVATE "pch.h")
+
 # Link Header/Source files
 target_include_directories(DX12Renderer PRIVATE "${CMAKLE_CURRENT_LIST_DIR}")
 target_sources(DX12Renderer
 	PRIVATE
+		"pch.h"
 		"framework.h"
 		"main.cpp"
 		"Resource.h"

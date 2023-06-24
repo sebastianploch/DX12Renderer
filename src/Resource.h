@@ -1,6 +1,4 @@
-//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by DX12Renderer.rc
 
 #define IDS_APP_TITLE			103
 

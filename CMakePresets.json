@@ -1,6 +1,6 @@
 {
     "version": 5,
-    "cmakeMinimumRequired": {"major": 3, "minor": 24, "patch": 0},
+    "cmakeMinimumRequired": {"major": 3, "minor": 16, "patch": 0},
     "configurePresets": [
       {
         "name": "windows-base",
@@ -8,7 +8,6 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/bin/${presetName}",
         "installDir": "${sourceDir}/out/install/${presetName}",
-        "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "environment": {
           "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
         },

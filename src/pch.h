@@ -19,3 +19,6 @@
 
 #include <wrl.h>
 using Microsoft::WRL::ComPtr;
+
+// Application
+#include "Utility/Assert.h"

@@ -1,6 +1,7 @@
 #pragma once
 
 // Standard Library
+#include <cassert>
 #include <string>
 #include <string_view>
 #include <format>

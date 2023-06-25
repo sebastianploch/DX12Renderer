@@ -28,4 +28,4 @@ target_precompile_headers(DX12Renderer PRIVATE "pch.h")
 # Link Header/Source files
 target_include_directories(DX12Renderer PRIVATE "${CMAKLE_CURRENT_LIST_DIR}")
 target_sources(DX12Renderer
-	PRIVATE "main.cpp" "Resource.h" "Core/Application.h" "Core/Application.cpp" "Core/RHI.h" "Core/RHI.cpp" "Utility/Assert.h")
+	PRIVATE "main.cpp" "Resource.h" "Core/Application.h" "Core/Application.cpp" "Core/RHI.h" "Core/RHI.cpp" "Utility/Assert.h" "Utility/TypeDefs.h")

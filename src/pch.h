@@ -22,4 +22,5 @@
 using Microsoft::WRL::ComPtr;
 
 // Application
+#include "Utility/TypeDefs.h"
 #include "Utility/Assert.h"

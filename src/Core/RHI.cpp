@@ -4,6 +4,7 @@ void RHI::Initialise()
 {
 	CreateDevice();
 	CreateFenceAndDescriptorSizes();
+	CheckMSAAQualitySupport();
 }
 
 void RHI::CreateDevice()
@@ -38,4 +39,18 @@ void RHI::CreateFenceAndDescriptorSizes()
 	DescriptorSizes.RTV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	DescriptorSizes.DSV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 	DescriptorSizes.CBVSRVUAV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+}
+
+void RHI::CheckMSAAQualitySupport()
+{
+	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS qualityLevels{
+		BackBufferFormat,
+		4,
+		D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE,
+		0
+	};
+	ThrowIfFailed(Device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &qualityLevels, sizeof(qualityLevels)));
+
+	MSAA4XQuality = qualityLevels.NumQualityLevels;
+	assert(MSAA4XQuality > 0 && "Unexcpted MSAA quality level");
 }

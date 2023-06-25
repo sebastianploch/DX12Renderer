@@ -1,9 +1,12 @@
 #pragma once
 
 // Standard Library
+#include <string>
+#include <string_view>
 #include <format>
 #include <vector>
 #include <memory>
+#include <functional>
 
 // DX12
 #include "directx/d3d12.h"

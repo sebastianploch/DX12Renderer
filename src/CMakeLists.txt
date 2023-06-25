@@ -1,11 +1,16 @@
 add_executable(DX12Renderer WIN32)
 
-target_compile_features(DX12Renderer PUBLIC cxx_std_23)
-
 # Enable Edit and Continue for MSVC compilers if supported.
 if(MSVC)
-  target_compile_options(DX12Renderer PUBLIC "/ZI /W4 /WX")
+  target_compile_options(DX12Renderer PUBLIC "/Zi")
   target_link_options(DX12Renderer PUBLIC "/INCREMENTAL")
+endif()
+
+# Additional compile flags
+if (MSVC)
+  target_compile_options(DX12Renderer PRIVATE "/W4")
+else()
+  target_compile_options(DX12Renderer PRIVATE "-Wall -Wextra -Wpedantic")
 endif()
 
 # Use UNICODE instead of ANSI

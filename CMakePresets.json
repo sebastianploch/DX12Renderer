@@ -8,9 +8,6 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/bin/${presetName}",
         "installDir": "${sourceDir}/out/install/${presetName}",
-        "environment": {
-          "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
-        },
         "cacheVariables": {
           "CMAKE_C_COMPILER": "cl.exe",
           "CMAKE_CXX_COMPILER": "cl.exe"

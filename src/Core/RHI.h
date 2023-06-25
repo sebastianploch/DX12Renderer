@@ -15,12 +15,17 @@ public:
 private:
 	static void CreateDevice();
 	static void CreateFenceAndDescriptorSizes();
+	static void CreateCommandQueueAndList();
 	static void CheckMSAAQualitySupport();
 
 public:
 	inline static ComPtr<ID3D12Device> Device {nullptr};
 	inline static ComPtr<IDXGIFactory6> Factory {nullptr};
 	inline static ComPtr<ID3D12Fence> Fence {nullptr};
+
+	inline static ComPtr<ID3D12CommandQueue> CommandQueue {nullptr};
+	inline static ComPtr<ID3D12CommandAllocator> CommandListAllocator {nullptr};
+	inline static ComPtr<ID3D12GraphicsCommandList> CommandList {nullptr};
 
 	inline static RHIDescriptorSizes DescriptorSizes {};
 	inline static uint32 MSAA4XQuality {0};

@@ -5,6 +5,7 @@ void RHI::Initialise()
 	CreateDevice();
 	CreateFenceAndDescriptorSizes();
 	CheckMSAAQualitySupport();
+	CreateCommandQueueAndList();
 }
 
 void RHI::CreateDevice()
@@ -41,9 +42,23 @@ void RHI::CreateFenceAndDescriptorSizes()
 	DescriptorSizes.CBVSRVUAV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
+void RHI::CreateCommandQueueAndList()
+{
+	constexpr D3D12_COMMAND_QUEUE_DESC cmdQueueDesc {
+		.Type = D3D12_COMMAND_LIST_TYPE_DIRECT,
+		.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE
+	};
+
+	ThrowIfFailed(Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&CommandQueue)));
+	ThrowIfFailed(Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&CommandListAllocator)));
+	ThrowIfFailed(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, CommandListAllocator.Get(), nullptr, IID_PPV_ARGS(&CommandList)));
+
+	CommandList->Close();
+}
+
 void RHI::CheckMSAAQualitySupport()
 {
-	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS qualityLevels{
+	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS qualityLevels {
 		BackBufferFormat,
 		4,
 		D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE,

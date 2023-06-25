@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "Core/Application.h"
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -19,8 +20,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
-
     // Initialize global strings
     MyRegisterClass(hInstance);
 
@@ -29,6 +28,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return FALSE;
     }
+
+	std::unique_ptr<Application> application = std::make_unique<Application>();
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DX12RENDERER));
 

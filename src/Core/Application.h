@@ -3,5 +3,6 @@
 class Application
 {
 public:
+	Application();
 	void Initialise();
 };

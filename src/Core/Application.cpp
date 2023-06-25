@@ -1,7 +1,12 @@
 #include "Application.h"
+#include "RHI.h"
+
+Application::Application()
+{
+	Initialise();
+}
 
 void Application::Initialise()
 {
-	int i = 5;
-	std::format("Test %i", i);
+	RHI::Initialise();
 }

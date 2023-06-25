@@ -4,7 +4,7 @@ target_compile_features(DX12Renderer PUBLIC cxx_std_23)
 
 # Enable Edit and Continue for MSVC compilers if supported.
 if(MSVC)
-  target_compile_options(DX12Renderer PUBLIC "/permissive /std:c++23 /ZI /W4 /WX")
+  target_compile_options(DX12Renderer PUBLIC "/ZI /W4 /WX")
   target_link_options(DX12Renderer PUBLIC "/INCREMENTAL")
 endif()
 

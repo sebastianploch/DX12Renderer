@@ -6,6 +6,13 @@ void RHI::Initialise()
 	CreateFenceAndDescriptorSizes();
 	CheckMSAAQualitySupport();
 	CreateCommandQueueAndList();
+	CreateSwapChain();
+}
+
+void RHI::ResizeWindow(uint32 Width, uint32 Height)
+{
+	WindowInfo.Width = Width;
+	WindowInfo.Height = Height;
 }
 
 void RHI::CreateDevice()
@@ -14,7 +21,7 @@ void RHI::CreateDevice()
 
 #if defined(DEBUG) || defined(_DEBUG)
 	{
-	// D3D12 Debug Layer
+		// D3D12 Debug Layer
 		ComPtr<ID3D12Debug> debug;
 		ThrowIfFailed(D3D12GetDebugInterface(IID_PPV_ARGS(&debug)));
 		debug->EnableDebugLayer();
@@ -76,6 +83,43 @@ void RHI::CreateCommandQueueAndList()
 	ThrowIfFailed(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, CommandListAllocator.Get(), nullptr, IID_PPV_ARGS(&CommandList)));
 
 	CommandList->Close();
+}
+
+void RHI::CreateSwapChain()
+{
+	constexpr DXGI_SAMPLE_DESC swapChainSampleDesc = {
+		.Count = 1,
+		.Quality = 0
+	};
+
+	const DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {
+		.Width = WindowInfo.Width,
+		.Height = WindowInfo.Height,
+		.Format = BackBufferFormat,
+		.SampleDesc = swapChainSampleDesc,
+		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,
+		.BufferCount = SwapChainBufferCount,
+		.Scaling = DXGI_SCALING_STRETCH,
+		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,
+		.AlphaMode = DXGI_ALPHA_MODE_IGNORE,
+		.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH
+	};
+
+	const DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullscreenSwapChainDesc = {
+		.Windowed = WindowInfo.Windowed
+	};
+
+	ComPtr<IDXGISwapChain1> swapChain;
+	ThrowIfFailed(Factory->CreateSwapChainForHwnd(
+		CommandQueue.Get(),
+		WindowInfo.Window,
+		&swapChainDesc,
+		&fullscreenSwapChainDesc,
+		nullptr,
+		swapChain.GetAddressOf()
+	));
+
+	ThrowIfFailed(swapChain.As(&SwapChain));
 }
 
 void RHI::CheckMSAAQualitySupport()

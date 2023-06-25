@@ -2,9 +2,8 @@
 
 void RHI::Initialise()
 {
-	HRESULT hr = S_OK;
-
 	CreateDevice();
+	CreateFenceAndDescriptorSizes();
 }
 
 void RHI::CreateDevice()
@@ -31,4 +30,12 @@ void RHI::CreateDevice()
 		ThrowIfFailed(Factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)));
 		ThrowIfFailed(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&Device)));
 	}
+}
+
+void RHI::CreateFenceAndDescriptorSizes()
+{
+	ThrowIfFailed(Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
+	DescriptorSizes.RTV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	DescriptorSizes.DSV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	DescriptorSizes.CBVSRVUAV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }

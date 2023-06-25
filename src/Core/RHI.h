@@ -20,7 +20,7 @@ private:
 
 public:
 	inline static ComPtr<ID3D12Device> Device {nullptr};
-	inline static ComPtr<IDXGIFactory6> Factory {nullptr};
+	inline static ComPtr<IDXGIFactory4> Factory {nullptr};
 	inline static ComPtr<ID3D12Fence> Fence {nullptr};
 
 	inline static ComPtr<ID3D12CommandQueue> CommandQueue {nullptr};
@@ -30,5 +30,5 @@ public:
 	inline static RHIDescriptorSizes DescriptorSizes {};
 	inline static uint32 MSAA4XQuality {0};
 
-	inline static DXGI_FORMAT BackBufferFormat {DXGI_FORMAT_R32G32B32A32_FLOAT};
+	inline static DXGI_FORMAT BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
 };

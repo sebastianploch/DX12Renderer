@@ -10,17 +10,39 @@ void RHI::Initialise()
 
 void RHI::CreateDevice()
 {
+	uint32 dxgiFactoryFlags = 0;
+
 #if defined(DEBUG) || defined(_DEBUG)
-	// D3D12 Debug Layer
 	{
+	// D3D12 Debug Layer
 		ComPtr<ID3D12Debug> debug;
 		ThrowIfFailed(D3D12GetDebugInterface(IID_PPV_ARGS(&debug)));
 		debug->EnableDebugLayer();
+
+#ifndef __MINGW32__
+		// DXGI Debug, taken from https://github.com/walbourn/directx-vs-templates/blob/main/d3d12game_win32_dr/DeviceResources.cpp#L105
+		dxgiFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
+
+		ComPtr<IDXGIInfoQueue> infoQueue;
+		ThrowIfFailed(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&infoQueue)));
+		infoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
+		infoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
+
+		DXGI_INFO_QUEUE_MESSAGE_ID hide[] = {80};
+		// IDXGISwapChain::GetContainingOutput: The swapchain's adapter does not control the output on which the swapchain's window resides.
+		DXGI_INFO_QUEUE_FILTER filter = {
+			.DenyList = {
+				.NumIDs = static_cast<UINT>(std::size(hide)),
+				.pIDList = hide
+			}
+		};
+		infoQueue->AddStorageFilterEntries(DXGI_DEBUG_DXGI, &filter);
+#endif // __MINGW32__
 	}
 #endif // defined(DEBUG) || defined(_DEBUG)
 
 	// Create DXGI Factory
-	ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&Factory)));
+	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&Factory)));
 
 	// Create Hardware Device
 	const HRESULT createDeviceResult = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&Device));

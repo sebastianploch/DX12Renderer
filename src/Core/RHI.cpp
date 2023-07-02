@@ -2,12 +2,14 @@
 
 void RHI::Initialise()
 {
+	LOG("-- Initialise RHI --");
 	CreateDevice();
 	CreateFenceAndDescriptorSizes();
 	CheckMSAAQualitySupport();
 	CreateCommandQueueAndList();
 	CreateSwapChain();
 	CreateDescriptorHeaps();
+	LOG("-- RHI Initialised --");
 }
 
 void RHI::ResizeWindow(uint32 Width, uint32 Height)

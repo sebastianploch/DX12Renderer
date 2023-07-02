@@ -89,12 +89,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	RECT rect = {0, 0, static_cast<int32>(RHI::WindowInfo.Width), static_cast<int32>(RHI::WindowInfo.Height)};
+	RECT rect = {0, 0, static_cast<int32>(RHI::m_WindowInfo.m_Width), static_cast<int32>(RHI::m_WindowInfo.m_Height)};
 	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
 	const int32 width = rect.right - rect.left;
 	const int32 height = rect.bottom - rect.top;
 
-	RHI::WindowInfo.Window = CreateWindowW(szWindowClass,
+	RHI::m_WindowInfo.m_Window = CreateWindowW(szWindowClass,
 	                                       szTitle,
 	                                       WS_OVERLAPPEDWINDOW,
 	                                       CW_USEDEFAULT,
@@ -106,13 +106,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	                                       hInstance,
 	                                       nullptr);
 
-	if (!RHI::WindowInfo.Window)
+	if (!RHI::m_WindowInfo.m_Window)
 	{
 		return FALSE;
 	}
 
-	ShowWindow(RHI::WindowInfo.Window, nCmdShow);
-	UpdateWindow(RHI::WindowInfo.Window);
+	ShowWindow(RHI::m_WindowInfo.m_Window, nCmdShow);
+	UpdateWindow(RHI::m_WindowInfo.m_Window);
 
 	return TRUE;
 }

@@ -11,8 +11,8 @@ void RHI::Initialise()
 
 void RHI::ResizeWindow(uint32 Width, uint32 Height)
 {
-	WindowInfo.Width = Width;
-	WindowInfo.Height = Height;
+	m_WindowInfo.m_Width = Width;
+	m_WindowInfo.m_Height = Height;
 }
 
 void RHI::CreateDevice()
@@ -49,26 +49,26 @@ void RHI::CreateDevice()
 #endif // defined(DEBUG) || defined(_DEBUG)
 
 	// Create DXGI Factory
-	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&Factory)));
+	ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&m_Factory)));
 
-	// Create Hardware Device
-	const HRESULT createDeviceResult = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&Device));
+	// Create Hardware m_Device
+	const HRESULT createDeviceResult = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_Device));
 
 	// Try to fallback to WARP device
 	if (FAILED(createDeviceResult))
 	{
 		ComPtr<IDXGIAdapter> adapter;
-		ThrowIfFailed(Factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)));
-		ThrowIfFailed(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&Device)));
+		ThrowIfFailed(m_Factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)));
+		ThrowIfFailed(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_Device)));
 	}
 }
 
 void RHI::CreateFenceAndDescriptorSizes()
 {
-	ThrowIfFailed(Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
-	DescriptorSizes.RTV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	DescriptorSizes.DSV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
-	DescriptorSizes.CBVSRVUAV = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	ThrowIfFailed(m_Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
+	m_DescriptorSizes.m_Rtv = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	m_DescriptorSizes.m_Dsv = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	m_DescriptorSizes.m_Cbvsrvuav = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
 void RHI::CreateCommandQueueAndList()
@@ -78,11 +78,11 @@ void RHI::CreateCommandQueueAndList()
 		.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE
 	};
 
-	ThrowIfFailed(Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&CommandQueue)));
-	ThrowIfFailed(Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&CommandListAllocator)));
-	ThrowIfFailed(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, CommandListAllocator.Get(), nullptr, IID_PPV_ARGS(&CommandList)));
+	ThrowIfFailed(m_Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_CommandQueue)));
+	ThrowIfFailed(m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CommandListAllocator)));
+	ThrowIfFailed(m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CommandListAllocator.Get(), nullptr, IID_PPV_ARGS(&m_CommandList)));
 
-	CommandList->Close();
+	m_CommandList->Close();
 }
 
 void RHI::CreateSwapChain()
@@ -93,12 +93,12 @@ void RHI::CreateSwapChain()
 	};
 
 	const DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {
-		.Width = WindowInfo.Width,
-		.Height = WindowInfo.Height,
-		.Format = BackBufferFormat,
+		.Width = m_WindowInfo.m_Width,
+		.Height = m_WindowInfo.m_Height,
+		.Format = m_BackBufferFormat,
 		.SampleDesc = swapChainSampleDesc,
 		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,
-		.BufferCount = SwapChainBufferCount,
+		.BufferCount = s_SwapChainBufferCount,
 		.Scaling = DXGI_SCALING_STRETCH,
 		.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,
 		.AlphaMode = DXGI_ALPHA_MODE_IGNORE,
@@ -106,32 +106,32 @@ void RHI::CreateSwapChain()
 	};
 
 	const DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullscreenSwapChainDesc = {
-		.Windowed = WindowInfo.Windowed
+		.Windowed = m_WindowInfo.m_Windowed
 	};
 
 	ComPtr<IDXGISwapChain1> swapChain;
-	ThrowIfFailed(Factory->CreateSwapChainForHwnd(
-		CommandQueue.Get(),
-		WindowInfo.Window,
+	ThrowIfFailed(m_Factory->CreateSwapChainForHwnd(
+		m_CommandQueue.Get(),
+		m_WindowInfo.m_Window,
 		&swapChainDesc,
 		&fullscreenSwapChainDesc,
 		nullptr,
 		swapChain.GetAddressOf()
 	));
 
-	ThrowIfFailed(swapChain.As(&SwapChain));
+	ThrowIfFailed(swapChain.As(&m_SwapChain));
 }
 
 void RHI::CheckMSAAQualitySupport()
 {
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS qualityLevels {
-		BackBufferFormat,
+		m_BackBufferFormat,
 		4,
 		D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE,
 		0
 	};
-	ThrowIfFailed(Device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &qualityLevels, sizeof(qualityLevels)));
+	ThrowIfFailed(m_Device->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &qualityLevels, sizeof(qualityLevels)));
 
-	MSAA4XQuality = qualityLevels.NumQualityLevels;
-	assert(MSAA4XQuality > 0 && "Unexcpted MSAA quality level");
+	m_Msaa4XQuality = qualityLevels.NumQualityLevels;
+	assert(m_Msaa4XQuality > 0 && "Unexcpted MSAA quality level");
 }

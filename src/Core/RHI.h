@@ -2,18 +2,18 @@
 
 struct RHIWindowInfo
 {
-	HWND Window {nullptr};
-	uint32 Width {1920};
-	uint32 Height {1080};
-	DXGI_RATIONAL RefreshRate {60, 1};
-	bool Windowed {true};
+	HWND m_Window {nullptr};
+	uint32 m_Width {1920};
+	uint32 m_Height {1080};
+	DXGI_RATIONAL m_RefreshRate {60, 1};
+	bool m_Windowed {true};
 };
 
 struct RHIDescriptorSizes
 {
-	uint32 RTV {0};
-	uint32 DSV {0};
-	uint32 CBVSRVUAV {0};
+	uint32 m_Rtv {0};
+	uint32 m_Dsv {0};
+	uint32 m_Cbvsrvuav {0};
 };
 
 class RHI
@@ -31,22 +31,22 @@ private:
 	static void CheckMSAAQualitySupport();
 
 public:
-	inline static ComPtr<ID3D12Device> Device {nullptr};
-	inline static ComPtr<IDXGIFactory4> Factory {nullptr};
-	inline static ComPtr<ID3D12Fence> Fence {nullptr};
-	inline static ComPtr<IDXGISwapChain3> SwapChain {nullptr};
+	inline static ComPtr<ID3D12Device> m_Device {nullptr};
+	inline static ComPtr<IDXGIFactory4> m_Factory {nullptr};
+	inline static ComPtr<ID3D12Fence> m_Fence {nullptr};
+	inline static ComPtr<IDXGISwapChain3> m_SwapChain {nullptr};
 
-	inline static ComPtr<ID3D12CommandQueue> CommandQueue {nullptr};
-	inline static ComPtr<ID3D12CommandAllocator> CommandListAllocator {nullptr};
-	inline static ComPtr<ID3D12GraphicsCommandList> CommandList {nullptr};
+	inline static ComPtr<ID3D12CommandQueue> m_CommandQueue {nullptr};
+	inline static ComPtr<ID3D12CommandAllocator> m_CommandListAllocator {nullptr};
+	inline static ComPtr<ID3D12GraphicsCommandList> m_CommandList {nullptr};
 
-	inline static RHIWindowInfo WindowInfo {};
-	inline static RHIDescriptorSizes DescriptorSizes {};
+	inline static RHIWindowInfo m_WindowInfo {};
+	inline static RHIDescriptorSizes m_DescriptorSizes {};
 
-	inline static constexpr uint32 SwapChainBufferCount {2};
-	inline static uint32 CurrentBackBuffer {0};
+	inline static constexpr uint32 s_SwapChainBufferCount {2};
+	inline static uint32 m_CurrentBackBuffer {0};
 
-	inline static uint32 MSAA4XQuality {0};
+	inline static uint32 m_Msaa4XQuality {0};
 
-	inline static DXGI_FORMAT BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
+	inline static DXGI_FORMAT m_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
 };

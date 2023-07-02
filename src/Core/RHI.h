@@ -29,6 +29,9 @@ public:
 
 	static void ResizeWindow(uint32 Width, uint32 Height);
 
+	[[nodiscard]] static D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferViewHandle();
+	[[nodiscard]] static D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilViewHandle();
+
 private:
 	static void CreateDevice();
 	static void CreateFenceAndDescriptorSizes();

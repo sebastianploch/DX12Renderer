@@ -17,6 +17,20 @@ void RHI::ResizeWindow(uint32 Width, uint32 Height)
 	// TODO: Add call to resize swapchain
 }
 
+D3D12_CPU_DESCRIPTOR_HANDLE RHI::GetCurrentBackBufferViewHandle()
+{
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		m_DescriptorHeaps.m_Rtv->GetCPUDescriptorHandleForHeapStart(),
+		static_cast<int32>(m_CurrentBackBuffer),
+		m_DescriptorSizes.m_Rtv
+	);
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE RHI::GetDepthStencilViewHandle()
+{
+	return m_DescriptorHeaps.m_Dsv->GetCPUDescriptorHandleForHeapStart();
+}
+
 void RHI::CreateDevice()
 {
 	uint32 dxgiFactoryFlags = 0;

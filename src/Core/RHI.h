@@ -38,6 +38,9 @@ private:
 	static void CheckMSAAQualitySupport();
 
 public:
+	inline static constexpr DXGI_FORMAT s_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
+	inline static constexpr uint32 s_SwapChainBufferCount {2};
+
 	inline static ComPtr<ID3D12Device> m_Device {nullptr};
 	inline static ComPtr<IDXGIFactory4> m_Factory {nullptr};
 	inline static ComPtr<ID3D12Fence> m_Fence {nullptr};
@@ -49,12 +52,10 @@ public:
 
 	inline static RHIWindowInfo m_WindowInfo {};
 	inline static RHIDescriptorSizes m_DescriptorSizes {};
-	inline static RHIDescriptorHeaps m_DescriptorHeaps {};
 
-	inline static constexpr uint32 s_SwapChainBufferCount {2};
 	inline static uint32 m_CurrentBackBuffer {0};
-
 	inline static uint32 m_Msaa4XQuality {0};
 
-	inline static constexpr DXGI_FORMAT s_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
+private:
+	inline static RHIDescriptorHeaps m_DescriptorHeaps {};
 };

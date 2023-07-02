@@ -42,7 +42,10 @@ public:
 
 	inline static RHIWindowInfo WindowInfo {};
 	inline static RHIDescriptorSizes DescriptorSizes {};
-	inline static uint32 SwapChainBufferCount {2};
+
+	inline static constexpr uint32 SwapChainBufferCount {2};
+	inline static uint32 CurrentBackBuffer {0};
+
 	inline static uint32 MSAA4XQuality {0};
 
 	inline static DXGI_FORMAT BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};

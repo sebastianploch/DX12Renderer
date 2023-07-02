@@ -14,6 +14,7 @@ void RHI::ResizeWindow(uint32 Width, uint32 Height)
 {
 	m_WindowInfo.m_Width = Width;
 	m_WindowInfo.m_Height = Height;
+	// TODO: Add call to resize swapchain
 }
 
 void RHI::CreateDevice()
@@ -88,6 +89,8 @@ void RHI::CreateCommandQueueAndList()
 
 void RHI::CreateSwapChain()
 {
+	// TODO: Add resize support
+
 	constexpr DXGI_SAMPLE_DESC swapChainSampleDesc = {
 		.Count = 1,
 		.Quality = 0

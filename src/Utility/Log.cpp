@@ -47,7 +47,7 @@ void Logger::Initialise()
 	log.addAppender(&debugOutputAppender);
 }
 
-void Logger::Log_Internal(Logger::Severity Severity, std::string_view FormattedString, size_t Line, const char* Function, const char* File, const void* Object)
+void Logger::Log_Internal(Severity Severity, std::string_view FormattedString, size_t Line, const char* Function, const char* File, const void* Object)
 {
 	const plog::Severity plogSeverity = GetPLogSeverity(Severity);
 	IF_PLOG(plogSeverity)

@@ -3,9 +3,9 @@
 #if LOGGING
 
 #ifdef _MSC_VER
-	#define GET_FUNC() __FUNCTION__
+#define GET_FUNC() __FUNCTION__
 #else // _MSC_VER
-	#define GET_FUNC() __PRETTY_FUNCTION__
+#define GET_FUNC() __PRETTY_FUNCTION__
 #endif // _MSC_VER
 
 #define LOG(msg, ...) Logger::Get().Log(Logger::Severity::Info, msg, __LINE__, GET_FUNC(), __FILE__, reinterpret_cast<void*>(0), __VA_ARGS__)

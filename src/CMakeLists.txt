@@ -13,6 +13,13 @@ else()
   target_compile_options(DX12Renderer PRIVATE "-Wall -Wextra -Wpedantic")
 endif()
 
+# Additional defines
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  target_compile_definitions(DX12Renderer PRIVATE "LOGGING=1")
+else()
+  target_compile_definitions(DX12Renderer PRIVATE "LOGGING=0")
+endif()
+
 # Use UNICODE instead of ANSI
 target_compile_definitions(DX12Renderer
   PRIVATE "UNICODE;_UNICODE"
@@ -29,4 +36,4 @@ target_precompile_headers(DX12Renderer PRIVATE "pch.h")
 # Link Header/Source files
 target_include_directories(DX12Renderer PRIVATE "${CMAKLE_CURRENT_LIST_DIR}")
 target_sources(DX12Renderer
-	PRIVATE "main.cpp" "Resource.h" "Core/Application.h" "Core/Application.cpp" "Core/RHI.h" "Core/RHI.cpp" "Utility/Assert.h" "Utility/TypeDefs.h" "Utility/Log.h")
+	PRIVATE "main.cpp" "Resource.h" "Core/Application.h" "Core/Application.cpp" "Core/RHI.h" "Core/RHI.cpp" "Utility/Assert.h" "Utility/TypeDefs.h" "Utility/Log.h" "Utility/Log.cpp")

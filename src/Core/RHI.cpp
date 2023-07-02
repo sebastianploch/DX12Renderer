@@ -7,6 +7,7 @@ void RHI::Initialise()
 	CheckMSAAQualitySupport();
 	CreateCommandQueueAndList();
 	CreateSwapChain();
+	CreateDescriptorHeaps();
 }
 
 void RHI::ResizeWindow(uint32 Width, uint32 Height)
@@ -120,6 +121,29 @@ void RHI::CreateSwapChain()
 	));
 
 	ThrowIfFailed(swapChain.As(&m_SwapChain));
+}
+
+void RHI::CreateDescriptorHeaps()
+{
+	// RTV
+	constexpr D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {
+		.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV,
+		.NumDescriptors = s_SwapChainBufferCount,
+		.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE,
+		.NodeMask = 0
+	};
+
+	ThrowIfFailed(m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_DescriptorHeaps.m_Rtv)));
+
+	// DSV
+	constexpr D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {
+		.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV,
+		.NumDescriptors = 1,
+		.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE,
+		.NodeMask = 0
+	};
+
+	ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_DescriptorHeaps.m_Dsv)));
 }
 
 void RHI::CheckMSAAQualitySupport()

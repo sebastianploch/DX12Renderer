@@ -16,6 +16,12 @@ struct RHIDescriptorSizes
 	uint32 m_Cbvsrvuav {0};
 };
 
+struct RHIDescriptorHeaps
+{
+	ComPtr<ID3D12DescriptorHeap> m_Rtv {nullptr};
+	ComPtr<ID3D12DescriptorHeap> m_Dsv {nullptr};
+};
+
 class RHI
 {
 public:
@@ -28,6 +34,7 @@ private:
 	static void CreateFenceAndDescriptorSizes();
 	static void CreateCommandQueueAndList();
 	static void CreateSwapChain();
+	static void CreateDescriptorHeaps();
 	static void CheckMSAAQualitySupport();
 
 public:
@@ -42,6 +49,7 @@ public:
 
 	inline static RHIWindowInfo m_WindowInfo {};
 	inline static RHIDescriptorSizes m_DescriptorSizes {};
+	inline static RHIDescriptorHeaps m_DescriptorHeaps {};
 
 	inline static constexpr uint32 s_SwapChainBufferCount {2};
 	inline static uint32 m_CurrentBackBuffer {0};

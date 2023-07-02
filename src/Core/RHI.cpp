@@ -96,7 +96,7 @@ void RHI::CreateSwapChain()
 	const DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {
 		.Width = m_WindowInfo.m_Width,
 		.Height = m_WindowInfo.m_Height,
-		.Format = m_BackBufferFormat,
+		.Format = s_BackBufferFormat,
 		.SampleDesc = swapChainSampleDesc,
 		.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT,
 		.BufferCount = s_SwapChainBufferCount,
@@ -149,7 +149,7 @@ void RHI::CreateDescriptorHeaps()
 void RHI::CheckMSAAQualitySupport()
 {
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS qualityLevels {
-		m_BackBufferFormat,
+		s_BackBufferFormat,
 		4,
 		D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE,
 		0

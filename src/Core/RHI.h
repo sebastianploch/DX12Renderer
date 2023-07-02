@@ -56,5 +56,5 @@ public:
 
 	inline static uint32 m_Msaa4XQuality {0};
 
-	inline static DXGI_FORMAT m_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
+	inline static constexpr DXGI_FORMAT s_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
 };

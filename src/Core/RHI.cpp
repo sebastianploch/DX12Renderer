@@ -10,6 +10,7 @@ void RHI::Initialise()
 	CreateCommandQueueAndList();
 	CreateSwapChain();
 	CreateDescriptorHeaps();
+	CreateRTVsToSwapChain();
 	LOG("-- RHI Initialised --");
 }
 
@@ -164,6 +165,22 @@ void RHI::CreateDescriptorHeaps()
 	};
 
 	ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_DescriptorHeaps.m_Dsv)));
+}
+
+void RHI::CreateRTVsToSwapChain()
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle {m_DescriptorHeaps.m_Rtv->GetCPUDescriptorHandleForHeapStart()};
+	for (uint32 i = 0; i < s_SwapChainBufferCount; ++i)
+	{
+		// Get buffer
+		ThrowIfFailed(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_SwapChainBuffer[i])));
+
+		// Create view into the buffer
+		m_Device->CreateRenderTargetView(m_SwapChainBuffer[i].Get(), nullptr, rtvHeapHandle);
+
+		// Bump heap
+		rtvHeapHandle.Offset(1, m_DescriptorSizes.m_Rtv);
+	}
 }
 
 void RHI::CheckMSAAQualitySupport()

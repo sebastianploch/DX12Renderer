@@ -39,6 +39,7 @@ private:
 	static void CreateCommandQueueAndList();
 	static void CreateSwapChain();
 	static void CreateDescriptorHeaps();
+	static void CreateRTVsToSwapChain();
 	static void CheckMSAAQualitySupport();
 
 public:
@@ -57,7 +58,9 @@ public:
 	inline static RHIWindowInfo m_WindowInfo {};
 	inline static RHIDescriptorSizes m_DescriptorSizes {};
 
+	inline static ComPtr<ID3D12Resource> m_SwapChainBuffer[2] = {};
 	inline static uint32 m_CurrentBackBuffer {0};
+
 	inline static uint32 m_Msaa4XQuality {0};
 
 private:

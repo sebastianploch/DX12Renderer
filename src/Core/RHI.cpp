@@ -1,3 +1,4 @@
+// Copyright (c) 2023 Sebastian Ploch
 #include "RHI.h"
 
 void RHI::Initialise()

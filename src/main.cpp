@@ -1,3 +1,4 @@
+// Copyright (c) 2023 Sebastian Ploch
 #include "Resource.h"
 #include "Core/Application.h"
 #include "Core/RHI.h"

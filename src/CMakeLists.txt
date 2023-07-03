@@ -1,3 +1,5 @@
+# Copyright (c) 2023 Sebastian Ploch
+
 add_executable(DX12Renderer WIN32)
 
 # Enable Edit and Continue for MSVC compilers if supported.

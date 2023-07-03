@@ -1,3 +1,5 @@
+// Copyright (c) 2023 Sebastian Ploch
+
 // Microsoft Visual C++ generated include file.
 
 #define IDS_APP_TITLE			103

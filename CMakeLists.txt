@@ -1,6 +1,5 @@
-﻿# CMakeList.txt : CMake project for DX12Renderer, include source and define
-# project specific logic here.
-#
+﻿# Copyright (c) 2023 Sebastian Ploch
+
 cmake_minimum_required (VERSION 3.16)
 
 # Enable Hot Reload for MSVC compilers if supported.

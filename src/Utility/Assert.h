@@ -1,3 +1,4 @@
+// Copyright (c) 2023 Sebastian Ploch
 #pragma once
 
 #include <exception>

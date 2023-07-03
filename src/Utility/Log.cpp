@@ -1,3 +1,4 @@
+// Copyright (c) 2023 Sebastian Ploch
 #include "Log.h"
 
 #if LOGGING

@@ -8,6 +8,7 @@
 #include <plog/Log.h>
 #include <plog/Initializers/RollingFileInitializer.h>
 #include <plog/Appenders/DebugOutputAppender.h>
+#include <plog/Appenders/ColorConsoleAppender.h>
 #include <filesystem>
 
 [[nodiscard]] static plog::Severity GetPLogSeverity(Logger::Severity Severity)
@@ -46,6 +47,9 @@ void Logger::Initialise()
 
 	static plog::DebugOutputAppender<plog::TxtFormatter> debugOutputAppender {};
 	log.addAppender(&debugOutputAppender);
+
+	static plog::ColorConsoleAppender<plog::TxtFormatter> colourConsoleOutputAppender {};
+	log.addAppender(&colourConsoleOutputAppender);
 }
 
 void Logger::Log_Internal(Severity Severity, std::string_view FormattedString, size_t Line, const char* Function, const char* File, const void* Object)

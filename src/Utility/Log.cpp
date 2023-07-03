@@ -7,7 +7,6 @@
 
 #include <plog/Log.h>
 #include <plog/Initializers/RollingFileInitializer.h>
-#include <plog/Appenders/DebugOutputAppender.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <filesystem>
 
@@ -44,9 +43,6 @@ void Logger::Initialise()
 
 	// Init plog
 	plog::Logger<0>& log = plog::init(plog::verbose, "Log.txt");
-
-	static plog::DebugOutputAppender<plog::TxtFormatter> debugOutputAppender {};
-	log.addAppender(&debugOutputAppender);
 
 	static plog::ColorConsoleAppender<plog::TxtFormatter> colourConsoleOutputAppender {};
 	log.addAppender(&colourConsoleOutputAppender);

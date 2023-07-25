@@ -11,6 +11,8 @@ void RHI::Initialise()
 	CreateSwapChain();
 	CreateDescriptorHeaps();
 	CreateRTVsToSwapChain();
+	CreateDepthStencilBuffer();
+	CreateDepthStencilRTV();
 	LOG("-- RHI Initialised --");
 }
 
@@ -109,6 +111,7 @@ void RHI::CreateSwapChain()
 {
 	// TODO: Add resize support
 
+	// TODO: this needs to be properly hooked with MSAA properties
 	constexpr DXGI_SAMPLE_DESC swapChainSampleDesc = {
 		.Count = 1,
 		.Quality = 0
@@ -181,6 +184,54 @@ void RHI::CreateRTVsToSwapChain()
 		// Bump heap
 		rtvHeapHandle.Offset(1, m_DescriptorSizes.m_Rtv);
 	}
+}
+
+void RHI::CreateDepthStencilBuffer()
+{
+	// TODO: this needs to be properly hooked with MSAA properties
+	constexpr DXGI_SAMPLE_DESC depthStencilSampleDesc = {
+		.Count = 1,
+		.Quality = 0
+	};
+
+	const D3D12_RESOURCE_DESC depthStencilDesc = {
+		.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D,
+		.Alignment = 0,
+		.Width = m_WindowInfo.m_Width,
+		.Height = m_WindowInfo.m_Height,
+		.DepthOrArraySize = 1,
+		.MipLevels = 1,
+		.Format = s_DepthStencilFormat,
+		.SampleDesc = depthStencilSampleDesc,
+		.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN,
+		.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
+	};
+
+	constexpr D3D12_DEPTH_STENCIL_VALUE depthStencilValue = {
+		.Depth = 1.f,
+		.Stencil = 0
+	};
+
+	const D3D12_CLEAR_VALUE optimisedClear = {
+		.Format = s_DepthStencilFormat,
+		.DepthStencil = depthStencilValue
+	};
+
+	const CD3DX12_HEAP_PROPERTIES heapProperties {D3D12_HEAP_TYPE_DEFAULT};
+	ThrowIfFailed(m_Device->CreateCommittedResource(&heapProperties,
+	                                                D3D12_HEAP_FLAG_NONE,
+	                                                &depthStencilDesc,
+	                                                D3D12_RESOURCE_STATE_COMMON,
+	                                                &optimisedClear,
+	                                                IID_PPV_ARGS(&m_DepthStencilBuffer)));
+}
+
+void RHI::CreateDepthStencilRTV()
+{
+	m_Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), nullptr, GetDepthStencilViewHandle());
+
+	const CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	m_CommandList->ResourceBarrier(1, &transition);
 }
 
 void RHI::CheckMSAAQualitySupport()

@@ -40,10 +40,13 @@ private:
 	static void CreateSwapChain();
 	static void CreateDescriptorHeaps();
 	static void CreateRTVsToSwapChain();
+	static void CreateDepthStencilBuffer();
+	static void CreateDepthStencilRTV();
 	static void CheckMSAAQualitySupport();
 
 public:
 	inline static constexpr DXGI_FORMAT s_BackBufferFormat {DXGI_FORMAT_R8G8B8A8_UNORM};
+	inline static constexpr DXGI_FORMAT s_DepthStencilFormat {DXGI_FORMAT_D24_UNORM_S8_UINT};
 	inline static constexpr uint32 s_SwapChainBufferCount {2};
 
 	inline static ComPtr<ID3D12Device> m_Device {nullptr};
@@ -60,6 +63,8 @@ public:
 
 	inline static ComPtr<ID3D12Resource> m_SwapChainBuffer[2] = {};
 	inline static uint32 m_CurrentBackBuffer {0};
+
+	inline static ComPtr<ID3D12Resource> m_DepthStencilBuffer {};
 
 	inline static uint32 m_Msaa4XQuality {0};
 

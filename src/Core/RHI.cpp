@@ -20,6 +20,7 @@ void RHI::ResizeWindow(uint32 Width, uint32 Height)
 {
 	m_WindowInfo.m_Width = Width;
 	m_WindowInfo.m_Height = Height;
+	LOG("Window resized to Width:{} Height:{}", m_WindowInfo.m_Width, m_WindowInfo.m_Height);
 	// TODO: Add call to resize swapchain
 }
 

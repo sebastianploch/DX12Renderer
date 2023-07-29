@@ -4,6 +4,7 @@
 void RHI::Initialise()
 {
 	LOG("-- Initialise RHI --");
+
 	CreateDevice();
 	CreateFenceAndDescriptorSizes();
 	CheckMSAAQualitySupport();
@@ -13,6 +14,11 @@ void RHI::Initialise()
 	CreateRTVsToSwapChain();
 	CreateDepthStencilBuffer();
 	CreateDepthStencilRTV();
+
+	if (m_CommandList)
+	{
+		m_CommandList->Close();
+	}
 	LOG("-- RHI Initialised --");
 }
 
@@ -104,8 +110,6 @@ void RHI::CreateCommandQueueAndList()
 	ThrowIfFailed(m_Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_CommandQueue)));
 	ThrowIfFailed(m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CommandListAllocator)));
 	ThrowIfFailed(m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CommandListAllocator.Get(), nullptr, IID_PPV_ARGS(&m_CommandList)));
-
-	m_CommandList->Close();
 }
 
 void RHI::CreateSwapChain()

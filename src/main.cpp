@@ -181,6 +181,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RHI::ResizeWindow(LOWORD(lParam), HIWORD(lParam));
 		}
 		break;
+	case WM_KEYUP:
+		{
+			if (wParam == VK_ESCAPE)
+			{
+				PostQuitMessage(0);
+			}
+			break;
+		}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

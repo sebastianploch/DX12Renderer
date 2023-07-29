@@ -42,6 +42,8 @@ private:
 	static void CreateRTVsToSwapChain();
 	static void CreateDepthStencilBuffer();
 	static void CreateDepthStencilRTV();
+
+	static void SetViewport();
 	static void CheckMSAAQualitySupport();
 
 public:

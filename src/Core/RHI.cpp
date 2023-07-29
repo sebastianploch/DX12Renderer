@@ -14,6 +14,7 @@ void RHI::Initialise()
 	CreateRTVsToSwapChain();
 	CreateDepthStencilBuffer();
 	CreateDepthStencilRTV();
+	SetViewport();
 
 	if (m_CommandList)
 	{
@@ -235,8 +236,24 @@ void RHI::CreateDepthStencilRTV()
 {
 	m_Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), nullptr, GetDepthStencilViewHandle());
 
-	const CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(m_DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	const CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(m_DepthStencilBuffer.Get(),
+	                                                                                 D3D12_RESOURCE_STATE_COMMON,
+	                                                                                 D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	m_CommandList->ResourceBarrier(1, &transition);
+}
+
+void RHI::SetViewport()
+{
+	const D3D12_VIEWPORT viewport = {
+		.TopLeftX = 0.f,
+		.TopLeftY = 0.f,
+		.Width = static_cast<float>(m_WindowInfo.m_Width),
+		.Height = static_cast<float>(m_WindowInfo.m_Height),
+		.MinDepth = 0.f,
+		.MaxDepth = 1.f
+	};
+
+	m_CommandList->RSSetViewports(1, &viewport);
 }
 
 void RHI::CheckMSAAQualitySupport()

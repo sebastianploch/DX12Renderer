@@ -5,5 +5,11 @@ class Application
 {
 public:
 	Application();
+
 	void Initialise();
+
+	void Tick();
+
+private:
+
 };

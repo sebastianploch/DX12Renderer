@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Sebastian Ploch
 #pragma once
 
+
 class Application
 {
 public:
@@ -10,9 +11,12 @@ public:
 
 	void Tick();
 
-	void Update(double DeltaTime);
+	void Update(float DeltaTime);
 	void Render();
 
 private:
+	void CalculateFrameStats();
 
+private:
+	inline static std::wstring s_ApplicationName {L"DX12Renderer"};
 };

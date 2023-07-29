@@ -27,7 +27,10 @@ void RHI::Initialise(HWND Window)
 
 void RHI::Reset()
 {
-	FlushCommandQueue();
+	if (m_Device)
+	{
+		FlushCommandQueue();
+	}
 
 	m_Device.Reset();
 	m_Factory.Reset();

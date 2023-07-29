@@ -27,8 +27,11 @@ class RHI
 {
 public:
 	static void Initialise(HWND Window);
+	static void Reset();
 
 	static void ResizeWindow(uint32 Width, uint32 Height);
+
+	static void FlushCommandQueue();
 
 	[[nodiscard]] static D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferViewHandle();
 	[[nodiscard]] static D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilViewHandle();
@@ -51,6 +54,13 @@ public:
 	inline static constexpr DXGI_FORMAT s_DepthStencilFormat {DXGI_FORMAT_D24_UNORM_S8_UINT};
 	inline static constexpr uint32 s_SwapChainBufferCount {2};
 
+	inline static uint32 m_Msaa4XQuality {0};
+	inline static uint32 m_CurrentBackBuffer {0};
+	inline static uint64 m_CurrentFence{0};
+
+	inline static RHIWindowInfo m_WindowInfo {};
+	inline static RHIDescriptorSizes m_DescriptorSizes {};
+
 	inline static ComPtr<ID3D12Device> m_Device {nullptr};
 	inline static ComPtr<IDXGIFactory4> m_Factory {nullptr};
 	inline static ComPtr<ID3D12Fence> m_Fence {nullptr};
@@ -60,15 +70,8 @@ public:
 	inline static ComPtr<ID3D12CommandAllocator> m_CommandListAllocator {nullptr};
 	inline static ComPtr<ID3D12GraphicsCommandList> m_CommandList {nullptr};
 
-	inline static RHIWindowInfo m_WindowInfo {};
-	inline static RHIDescriptorSizes m_DescriptorSizes {};
-
 	inline static ComPtr<ID3D12Resource> m_SwapChainBuffer[2] = {};
-	inline static uint32 m_CurrentBackBuffer {0};
-
 	inline static ComPtr<ID3D12Resource> m_DepthStencilBuffer {};
-
-	inline static uint32 m_Msaa4XQuality {0};
 
 private:
 	inline static RHIDescriptorHeaps m_DescriptorHeaps {};

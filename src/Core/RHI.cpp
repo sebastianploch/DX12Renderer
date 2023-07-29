@@ -25,12 +25,50 @@ void RHI::Initialise(HWND Window)
 	LOG("-- RHI Initialised --");
 }
 
+void RHI::Reset()
+{
+	FlushCommandQueue();
+
+	m_Device.Reset();
+	m_Factory.Reset();
+	m_Fence.Reset();
+	m_SwapChain.Reset();
+	m_CommandQueue.Reset();
+	m_CommandListAllocator.Reset();
+	m_CommandList.Reset();
+
+	for (ComPtr<ID3D12Resource>& swapChainBuffer : m_SwapChainBuffer)
+	{
+		swapChainBuffer.Reset();
+	}
+	m_DepthStencilBuffer.Reset();
+
+	m_DescriptorHeaps.m_Rtv.Reset();
+	m_DescriptorHeaps.m_Dsv.Reset();
+}
+
 void RHI::ResizeWindow(uint32 Width, uint32 Height)
 {
 	m_WindowInfo.m_Width = Width;
 	m_WindowInfo.m_Height = Height;
 	LOG("Window resized to Width:{} Height:{}", m_WindowInfo.m_Width, m_WindowInfo.m_Height);
 	// TODO: Add call to resize swapchain
+}
+
+void RHI::FlushCommandQueue()
+{
+	++m_CurrentFence;
+
+	ThrowIfFailed(m_CommandQueue->Signal(m_Fence.Get(), m_CurrentFence));
+
+	if (m_Fence->GetCompletedValue() < m_CurrentFence)
+	{
+		HANDLE eventHandle = CreateEventEx(nullptr, nullptr, false, EVENT_ALL_ACCESS);
+		ThrowIfFailed(m_Fence->SetEventOnCompletion(m_CurrentFence, eventHandle));
+
+		WaitForSingleObject(eventHandle, INFINITE);
+		CloseHandle(eventHandle);
+	}
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE RHI::GetCurrentBackBufferViewHandle()

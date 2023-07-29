@@ -2,17 +2,16 @@
 #include "Resource.h"
 #include "Core/Application.h"
 #include "Core/RHI.h"
-
 #include <ios>
+
 
 // Global Variables:
 HINSTANCE hInst; // current instance
-LPCWSTR szTitle = L"DX12Renderer"; // The title bar text
 LPCWSTR szWindowClass = L"MainWnd"; // the main window class name
 
 // Forward declarations of functions included in this code module:
 ATOM MyRegisterClass(HINSTANCE hInstance);
-BOOL InitInstance(HINSTANCE, int);
+HWND InitInstance(HINSTANCE, int, const wchar_t*);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
@@ -39,13 +38,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialize Console Window
 	Console::CreateNewConsole(1024);
 
+	const std::unique_ptr<Application> application = std::make_unique<Application>(L"DX12Renderer");
+
 	// Perform application initialization:
-	if (!InitInstance(hInstance, nCmdShow))
+	HWND hwnd = InitInstance(hInstance, nCmdShow, application->m_ApplicationName);
+	if (!hwnd)
 	{
 		return FALSE;
 	}
 
-	std::unique_ptr<Application> application = std::make_unique<Application>();
+	RHI::Initialise(hwnd);
 
 	MSG msg = {nullptr};
 
@@ -94,7 +96,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 }
 
 //
-//   FUNCTION: InitInstance(HINSTANCE, int)
+//   FUNCTION: InitInstance(HINSTANCE, int, const wchar_t*)
 //
 //   PURPOSE: Saves instance handle and creates main window
 //
@@ -103,7 +105,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
+HWND InitInstance(HINSTANCE hInstance, int nCmdShow, const wchar_t* WindowTitle)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
@@ -112,27 +114,25 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	const int32 width = rect.right - rect.left;
 	const int32 height = rect.bottom - rect.top;
 
-	RHI::m_WindowInfo.m_Window = CreateWindowW(szWindowClass,
-	                                           szTitle,
-	                                           WS_OVERLAPPEDWINDOW,
-	                                           CW_USEDEFAULT,
-	                                           CW_USEDEFAULT,
-	                                           width,
-	                                           height,
-	                                           nullptr,
-	                                           nullptr,
-	                                           hInstance,
-	                                           nullptr);
+	HWND hwnd = CreateWindowW(szWindowClass,
+	                          WindowTitle,
+	                          WS_OVERLAPPEDWINDOW,
+	                          CW_USEDEFAULT,
+	                          CW_USEDEFAULT,
+	                          width,
+	                          height,
+	                          nullptr,
+	                          nullptr,
+	                          hInstance,
+	                          nullptr);
 
-	if (!RHI::m_WindowInfo.m_Window)
+	if (hwnd)
 	{
-		return FALSE;
+		ShowWindow(hwnd, nCmdShow);
+		UpdateWindow(hwnd);
 	}
 
-	ShowWindow(RHI::m_WindowInfo.m_Window, nCmdShow);
-	UpdateWindow(RHI::m_WindowInfo.m_Window);
-
-	return TRUE;
+	return hwnd;
 }
 
 //

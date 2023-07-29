@@ -7,7 +7,8 @@
 
 Timer g_Timer;
 
-Application::Application()
+Application::Application(const wchar_t* ApplicationName)
+	: m_ApplicationName(ApplicationName)
 {
 	g_Timer.Reset();
 	Initialise();
@@ -15,7 +16,6 @@ Application::Application()
 
 void Application::Initialise()
 {
-	RHI::Initialise();
 }
 
 void Application::Tick()
@@ -52,7 +52,7 @@ void Application::CalculateFrameStats()
 	const float frameRate = static_cast<float>(frameCount);
 	const float frameProcessTime = 1000.f / frameRate;
 
-	const std::wstring windowText = std::format(L"{}	FPS: {} ({}ms)", s_ApplicationName, static_cast<int32>(frameRate), frameProcessTime);
+	const std::wstring windowText = std::format(L"{}	FPS: {} ({}ms)", m_ApplicationName, static_cast<int32>(frameRate), frameProcessTime);
 	SetWindowText(RHI::m_WindowInfo.m_Window, windowText.c_str());
 
 	frameCount = 0;

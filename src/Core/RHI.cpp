@@ -1,9 +1,11 @@
 // Copyright (c) 2023 Sebastian Ploch
 #include "RHI.h"
 
-void RHI::Initialise()
+void RHI::Initialise(HWND Window)
 {
 	LOG("-- Initialise RHI --");
+	assert(Window && "HWND has to be created and valid before RHI initialisation");
+	m_WindowInfo.m_Window = Window;
 
 	CreateDevice();
 	CreateFenceAndDescriptorSizes();

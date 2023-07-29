@@ -26,7 +26,7 @@ struct RHIDescriptorHeaps
 class RHI
 {
 public:
-	static void Initialise();
+	static void Initialise(HWND Window);
 
 	static void ResizeWindow(uint32 Width, uint32 Height);
 

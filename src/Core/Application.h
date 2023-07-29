@@ -5,7 +5,7 @@
 class Application
 {
 public:
-	Application();
+	Application(const wchar_t* ApplicationName);
 
 	void Initialise();
 
@@ -17,6 +17,6 @@ public:
 private:
 	void CalculateFrameStats();
 
-private:
-	inline static std::wstring s_ApplicationName {L"DX12Renderer"};
+public:
+	const wchar_t* m_ApplicationName;
 };

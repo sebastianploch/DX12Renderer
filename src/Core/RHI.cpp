@@ -40,7 +40,7 @@ void RHI::Reset()
 	m_CommandListAllocator.Reset();
 	m_CommandList.Reset();
 
-	for (ComPtr<ID3D12Resource>& swapChainBuffer : m_SwapChainBuffer)
+	for (ComPtr<ID3D12Resource>& swapChainBuffer : m_SwapChainBuffers)
 	{
 		swapChainBuffer.Reset();
 	}
@@ -52,10 +52,47 @@ void RHI::Reset()
 
 void RHI::ResizeWindow(uint32 Width, uint32 Height)
 {
+	// Abort if resizing to the currently set dimensions
+	if (m_WindowInfo.m_Width == Width && m_WindowInfo.m_Height == Height)
+	{
+		return;
+	}
+
 	m_WindowInfo.m_Width = Width;
 	m_WindowInfo.m_Height = Height;
 	LOG("Window resized to Width:{} Height:{}", m_WindowInfo.m_Width, m_WindowInfo.m_Height);
-	// TODO: Add call to resize swapchain
+
+	// Finish current work
+	FlushCommandQueue();
+
+	// Release buffers that need to be resized/re-created
+	for (ComPtr<ID3D12Resource>& swapChainBuffer : m_SwapChainBuffers)
+	{
+		swapChainBuffer.Reset();
+	}
+	m_DepthStencilBuffer.Reset();
+
+	ThrowIfFailed(m_SwapChain->ResizeBuffers(s_SwapChainBufferCount,
+	                                         m_WindowInfo.m_Width,
+	                                         m_WindowInfo.m_Height,
+	                                         s_BackBufferFormat,
+	                                         DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH));
+	m_CurrentBackBuffer = 0;
+
+	// Re-create buffers
+	CreateRTVsToSwapChain();
+	CreateDepthStencilBuffer();
+	CreateDepthStencilRTV();
+
+	// Execute resize
+	ThrowIfFailed(m_CommandList->Close());
+	ID3D12CommandList* commandLists[] = {m_CommandList.Get()};
+	m_CommandQueue->ExecuteCommandLists(_countof(commandLists), commandLists);
+
+	FlushCommandQueue();
+
+	// Update viewport with current dimensions
+	SetViewport();
 }
 
 void RHI::FlushCommandQueue()
@@ -225,10 +262,10 @@ void RHI::CreateRTVsToSwapChain()
 	for (uint32 i = 0; i < s_SwapChainBufferCount; ++i)
 	{
 		// Get buffer
-		ThrowIfFailed(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_SwapChainBuffer[i])));
+		ThrowIfFailed(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_SwapChainBuffers[i])));
 
 		// Create view into the buffer
-		m_Device->CreateRenderTargetView(m_SwapChainBuffer[i].Get(), nullptr, rtvHeapHandle);
+		m_Device->CreateRenderTargetView(m_SwapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
 
 		// Bump heap
 		rtvHeapHandle.Offset(1, m_DescriptorSizes.m_Rtv);

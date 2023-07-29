@@ -70,7 +70,7 @@ public:
 	inline static ComPtr<ID3D12CommandAllocator> m_CommandListAllocator {nullptr};
 	inline static ComPtr<ID3D12GraphicsCommandList> m_CommandList {nullptr};
 
-	inline static ComPtr<ID3D12Resource> m_SwapChainBuffer[2] = {};
+	inline static ComPtr<ID3D12Resource> m_SwapChainBuffers[2] = {};
 	inline static ComPtr<ID3D12Resource> m_DepthStencilBuffer {};
 
 private:

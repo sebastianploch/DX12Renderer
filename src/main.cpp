@@ -176,6 +176,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			EndPaint(hWnd, &ps);
 		}
 		break;
+	case WM_SIZE:
+		{
+			RHI::ResizeWindow(LOWORD(lParam), HIWORD(lParam));
+		}
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

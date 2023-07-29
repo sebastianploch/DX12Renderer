@@ -51,7 +51,7 @@ void Timer::Stop()
 	m_Stopped = true;
 }
 
-void Timer::Tick()
+void Timer::Tick(const std::function<void(double)>& TickFunction /*= nullptr*/)
 {
 	if (m_Stopped)
 	{
@@ -69,6 +69,11 @@ void Timer::Tick()
 	if (m_DeltaTime < 0.0)
 	{
 		m_DeltaTime = 0.0;
+	}
+
+	if (TickFunction)
+	{
+		TickFunction(m_DeltaTime);
 	}
 }
 

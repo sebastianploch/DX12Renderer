@@ -9,7 +9,7 @@ public:
 	void Reset();
 	void Start();
 	void Stop();
-	void Tick();
+	void Tick(const std::function<void(double)>& TickFunction = nullptr);
 
 	[[nodiscard]] double GetTotalTime() const;
 	[[nodiscard]] double GetDeltaTime() const;

@@ -14,7 +14,7 @@ struct RHIDescriptorSizes
 {
 	uint32 m_Rtv {0};
 	uint32 m_Dsv {0};
-	uint32 m_Cbvsrvuav {0};
+	uint32 m_CbvSrvUav {0};
 };
 
 struct RHIDescriptorHeaps

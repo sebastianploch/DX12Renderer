@@ -47,20 +47,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	std::unique_ptr<Application> application = std::make_unique<Application>();
 
-	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DX12RENDERER));
-
-	MSG msg;
+	MSG msg = {nullptr};
 
 	// Main message loop:
-	while (GetMessage(&msg, nullptr, 0, 0))
+	while (msg.message != WM_QUIT)
 	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
-		application->Tick();
+		else
+		{
+			application->Tick();
+		}
 	}
 
 	Console::ReleaseConsole();

@@ -51,7 +51,7 @@ void Timer::Stop()
 	m_Stopped = true;
 }
 
-void Timer::Tick(const std::function<void(double)>& TickFunction /*= nullptr*/)
+void Timer::Tick(const std::function<void(float)>& TickFunction /*= nullptr*/)
 {
 	if (m_Stopped)
 	{
@@ -73,22 +73,22 @@ void Timer::Tick(const std::function<void(double)>& TickFunction /*= nullptr*/)
 
 	if (TickFunction)
 	{
-		TickFunction(m_DeltaTime);
+		TickFunction(static_cast<float>(m_DeltaTime));
 	}
 }
 
-double Timer::GetTotalTime() const
+float Timer::GetTotalTime() const
 {
 	if (m_Stopped)
 	{
 		// Return corrected time that doesn't include current stop
-		return static_cast<double>((m_StopTime - m_PreviousTime) - m_StartTime) * m_SecondsPerCount;
+		return static_cast<float>((m_StopTime - m_PreviousTime) - m_StartTime) * static_cast<float>(m_SecondsPerCount);
 	}
 
-	return static_cast<double>((m_CurrentTime - m_PausedTime) - m_StartTime) * m_SecondsPerCount;
+	return static_cast<float>((m_CurrentTime - m_PausedTime) - m_StartTime) * static_cast<float>(m_SecondsPerCount);
 }
 
-double Timer::GetDeltaTime() const
+float Timer::GetDeltaTime() const
 {
-	return m_DeltaTime;
+	return static_cast<float>(m_DeltaTime);
 }

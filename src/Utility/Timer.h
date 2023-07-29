@@ -9,13 +9,13 @@ public:
 	void Reset();
 	void Start();
 	void Stop();
-	void Tick(const std::function<void(double)>& TickFunction = nullptr);
+	void Tick(const std::function<void(float)>& TickFunction = nullptr);
 
-	[[nodiscard]] double GetTotalTime() const;
-	[[nodiscard]] double GetDeltaTime() const;
+	[[nodiscard]] float GetTotalTime() const;
+	[[nodiscard]] float GetDeltaTime() const;
 
 private:
-	double m_SecondsPerCount {-1.0};
+	double m_SecondsPerCount {0.0};
 	double m_DeltaTime {0.0};
 
 	int64 m_StartTime {0};

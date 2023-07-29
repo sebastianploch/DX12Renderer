@@ -4,7 +4,7 @@
 #include "RHI.h"
 #include "Utility/Timer.h"
 
-static Timer g_Timer;
+Timer g_Timer;
 
 Application::Application()
 {
@@ -19,5 +19,18 @@ void Application::Initialise()
 
 void Application::Tick()
 {
-	g_Timer.Tick();
+	g_Timer.Tick([this](double DeltaTime) -> void
+	{
+		Application::Update(DeltaTime);
+	});
+
+	Render();
+}
+
+void Application::Update(double DeltaTime)
+{
+}
+
+void Application::Render()
+{
 }

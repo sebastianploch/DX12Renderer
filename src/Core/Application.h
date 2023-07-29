@@ -10,6 +10,9 @@ public:
 
 	void Tick();
 
+	void Update(double DeltaTime);
+	void Render();
+
 private:
 
 };
